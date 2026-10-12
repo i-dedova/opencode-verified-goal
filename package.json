@@ -1,0 +1,40 @@
+{
+  "name": "@i-dedova/opencode-verified-goal",
+  "version": "0.1.0",
+  "description": "OpenCode goal plugin: a goal loop whose transitions are gated by an independent, deny-all reviewer lane.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/i-dedova/opencode-verified-goal.git"
+  },
+  "homepage": "https://github.com/i-dedova/opencode-verified-goal#readme",
+  "bugs": "https://github.com/i-dedova/opencode-verified-goal/issues",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": "./src/server.ts",
+    "./server": "./server.ts"
+  },
+  "bin": {
+    "opencode-verified-goal-install-lane": "./bin/install-lane.js"
+  },
+  "files": [
+    "src",
+    "server.ts",
+    "agents",
+    "bin",
+    "NOTICE.md",
+    "DESIGN.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node scripts/test.mjs",
+    "install-lane": "node bin/install-lane.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

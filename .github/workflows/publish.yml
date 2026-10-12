@@ -1,0 +1,41 @@
+name: publish
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # npm Trusted Publishing (OIDC) - no tokens stored anywhere
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24 # the suite runs TypeScript via Node's native type stripping
+      - name: The plugin suite must pass
+        run: npm test
+
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: "https://registry.npmjs.org"
+      - name: The tag must match the package version
+        run: |
+          pkg=$(node -p "require('./package.json').version")
+          tag=${GITHUB_REF_NAME#v}
+          if [ "$pkg" != "$tag" ]; then
+            echo "tag $tag does not match package version $pkg"
+            exit 1
+          fi
+      - name: Publish
+        run: npm publish --provenance --access public
