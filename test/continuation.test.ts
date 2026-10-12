@@ -715,12 +715,12 @@ test("mutex exhaustion stops driving with state-write-failed, then lands on a la
 });
 
 test("degraded mutex (unavailable database) proceeds without exclusion", async () => {
-  const fx = fixture({ dbPath: join(process.cwd(), "definitely-not-a-dir", "x", "lock.db") });
+  const fx = fixture({ dbPath: join(tmpdir(), "opencode-verified-goal-nodir", "x", "lock.db") });
   // Replace the path with one whose parent cannot be created.
   fx.mutex.close();
   const broken = new mutexModule.SessionMutex({
     // A file where a directory is required makes mkdir/open fail deterministically.
-    dbPath: join(process.cwd(), "helpers.ts", "nested", "lock.db"),
+    dbPath: join(tmpdir(), "opencode-verified-goal-nested", "nested", "lock.db"),
     pid: process.pid,
   });
   try {
